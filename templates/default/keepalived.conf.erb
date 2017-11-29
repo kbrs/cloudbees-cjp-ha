@@ -1,0 +1,27 @@
+global_defs {
+  notification_email {
+    <%= node['cloudbees-cjp-ha']['haproxy']['keepalived']['notify_email'] %>
+  }
+smtp_server <%= node['cloudbees-cjp-ha']['haproxy']['keepalived']['smtp_gateway'] %>
+smtp_connect_timeout <%= node['cloudbees-cjp-ha']['haproxy']['keepalived']['smtp_gw_timeout'] %>
+}
+
+vrrp_script chk_haproxy {
+        script "killall -0 haproxy"
+        interval <%= node['cloudbees-cjp-ha']['haproxy']['keepalived']['interval'] %>
+        weight 2
+}
+
+vrrp_instance VI_1 {
+        interface <%= node['cloudbees-cjp-ha']['haproxy']['keepalived']['virt_int'] %>
+        state MASTER
+        virtual_router_id 51
+        priority <%= node['cloudbees-cjp-ha']['haproxy']['keepalived']['priority'] %>
+        virtual_ipaddress {
+            <%= node['cloudbees-cjp-ha']['haproxy']['keepalived']['virt_ip'] %>
+        }
+        track_script {
+            chk_haproxy
+        }
+        smtp_alert
+}

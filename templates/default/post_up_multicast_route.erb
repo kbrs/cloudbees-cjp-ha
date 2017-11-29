@@ -1,0 +1,4 @@
+#!/bin/bash
+# This script adds all of the needed routes for ip4_multicast:
+
+ip route add 224.0.0.0/4 dev <%= node['cloudbees-cjp-ha']['opcenter']['ip4_multicast']['interface'] %>

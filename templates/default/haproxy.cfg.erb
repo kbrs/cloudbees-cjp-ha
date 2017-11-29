@@ -1,0 +1,117 @@
+global
+    chroot              /var/lib/haproxy
+    maxconn             4096
+    user                haproxy
+    group               haproxy
+    stats               socket /var/lib/haproxy/stats
+    log                 127.0.0.1 local2
+    tune.ssl.default-dh-param 2048
+
+defaults
+    log                 global
+    option              logasap
+    option              http-server-close
+    option              redispatch
+    option              abortonclose
+    option              log-health-checks
+    retries             3
+    mode                tcp
+    timeout             http-request    10s
+    timeout             queue           1m
+    timeout             connect         10s
+    timeout             client          1m
+    timeout             server          1m
+    timeout             http-keep-alive 10s
+    timeout             check           500
+    default-server      inter <%= node['cloudbees-cjp-ha']['haproxy']['settings']['inter'] %> downinter <%= node['cloudbees-cjp-ha']['haproxy']['settings']['downinter'] %> fastinter <%= node['cloudbees-cjp-ha']['haproxy']['settings']['fastinter'] %> rise <%= node['cloudbees-cjp-ha']['haproxy']['settings']['rise'] %> fall <%= node['cloudbees-cjp-ha']['haproxy']['settings']['fall'] %>
+
+# define the backend for redirecting any "lost" users to the
+# default Jenkins instance
+backend www-default
+    mode             http
+    redirect         prefix /operations-center
+
+# define the backend for the operations-center instances
+backend www-operations-center
+    mode             http
+    balance          source
+    # context path for app is /operations-center
+    option           httpchk HEAD /operations-center/ha/health-check
+    server    opcenter00 <%= node['cloudbees-cjp-ha']['haproxy']['hosts']['opcenter']['pri_ip'] %>:<%= node['cloudbees-cjp-ha']['opcenter']['jenkins-oc']['http_port'] %> check
+    server    opcenter01 <%= node['cloudbees-cjp-ha']['haproxy']['hosts']['opcenter']['sec_ip'] %>:<%= node['cloudbees-cjp-ha']['opcenter']['jenkins-oc']['http_port'] %> check
+
+# define the backend for JNLP connections to the active
+# operations-center instance
+backend jnlp-operations-center
+    timeout          server 1m
+    balance          source
+    option    httpchk HEAD /operations-center/ha/health-check
+    option tcpka
+    server    opcenter00 <%= node['cloudbees-cjp-ha']['haproxy']['hosts']['opcenter']['pri_ip'] %>:<%= node['cloudbees-cjp-ha']['haproxy']['hosts']['opcenter']['jnlp_port'] %> check port <%= node['cloudbees-cjp-ha']['opcenter']['jenkins-oc']['http_port'] %>
+    server    opcenter01 <%= node['cloudbees-cjp-ha']['haproxy']['hosts']['opcenter']['sec_ip'] %>:<%= node['cloudbees-cjp-ha']['haproxy']['hosts']['opcenter']['jnlp_port'] %> check port <%= node['cloudbees-cjp-ha']['opcenter']['jenkins-oc']['http_port'] %>
+
+# define the backend for the ha-master instances
+backend www-ha-master
+    mode             http
+    balance          source
+    option           httpchk HEAD /ha-master/ha/health-check
+    server    master00 <%= node['cloudbees-cjp-ha']['haproxy']['hosts']['master']['pri_ip'] %>:<%= node['cloudbees-cjp-ha']['master']['jenkins']['http_port'] %> check
+    server    master01 <%= node['cloudbees-cjp-ha']['haproxy']['hosts']['master']['sec_ip'] %>:<%= node['cloudbees-cjp-ha']['master']['jenkins']['http_port'] %> check
+
+# define the backend for JNLP connections to the active ha-master instance
+backend jnlp-ha-master
+    timeout          server 1m
+    balance          source
+    option           httpchk HEAD /ha-master/ha/health-check
+    option tcpka
+    server    master00 <%= node['cloudbees-cjp-ha']['haproxy']['hosts']['master']['pri_ip'] %>:<%= node['cloudbees-cjp-ha']['haproxy']['hosts']['master']['jnlp_port'] %> check port <%= node['cloudbees-cjp-ha']['master']['jenkins']['http_port'] %>
+    server    master01 <%= node['cloudbees-cjp-ha']['haproxy']['hosts']['master']['sec_ip'] %>:<%= node['cloudbees-cjp-ha']['haproxy']['hosts']['master']['jnlp_port'] %> check port <%= node['cloudbees-cjp-ha']['master']['jenkins']['http_port'] %>
+
+frontend jenkins-cluster-http
+    mode             http
+    bind             0.0.0.0:80
+    reqadd           X-Forwarded-Proto:\ http
+    reqadd           X-Forwarded-Port:\ 80
+    option           forwardfor except 127.0.0.0/8
+    option           httplog
+    acl              is_oc path_beg /operations-center
+    acl              is_ha path_beg /ha-master
+    acl              is_sts path_beg /stats
+    use_backend      www-operations-center if is_oc
+    use_backend      www-ha-master if is_ha
+    default_backend  www-default
+
+# define the front-end for JNLP connections to the active
+# operations-center instance
+frontend operations-center-jnlp
+    bind             0.0.0.0:<%= node['cloudbees-cjp-ha']['haproxy']['hosts']['opcenter']['jnlp_port'] %>
+    option           tcplog
+    # tcplog can be removed for production use
+    timeout          client 1m
+    use_backend      jnlp-operations-center
+
+# define the front-end for JNLP connections to the active
+# ha-master instance
+frontend ha-master-jnlp
+    bind             0.0.0.0:<%= node['cloudbees-cjp-ha']['haproxy']['hosts']['master']['jnlp_port'] %>
+    option           tcplog
+    # tcplog can be removed for production use
+    timeout          client 1m
+    use_backend      jnlp-ha-master
+
+# stats
+frontend www-ha-stats
+    bind             0.0.0.0:8001
+    option           tcplog
+    # tcplog can be removed for production use
+    use_backend      ha-stats
+
+backend ha-stats
+  mode http
+  stats <%= node['cloudbees-cjp-ha']['haproxy']['settings']['stats_enable'] %>
+  stats hide-version
+  stats uri     /stats
+  stats refresh <%= node['cloudbees-cjp-ha']['haproxy']['settings']['stats_refresh'] %>
+  stats realm HAProxy\ Statistics
+  stats auth <%= node['cloudbees-cjp-ha']['haproxy']['settings']['stats_user'] %>:<%= node['cloudbees-cjp-ha']['haproxy']['settings']['stats_pass'] %>
+  stats admin if TRUE

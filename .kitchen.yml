@@ -1,0 +1,119 @@
+---
+driver:
+  name: vagrant
+
+provisioner:
+  name: chef_zero
+
+driver_config:
+  require_chef_omnibus: 12.13.37
+
+platforms:
+  - name: ubuntu-14.04
+
+suites:
+  - name: nfs
+    includes:
+      - ubuntu-14.04
+    driver:
+      vm_hostname: nfs.yourorg.io
+      network:
+      - ["private_network", {ip: "192.168.254.250"}]
+      #synced_folders:
+      #  - ["/tmp/%{instance_name}", "/tmp/instance_data"]
+    run_list:
+      - recipe[apt]
+      - recipe[cloudbees-cjp-ha::nfs]
+    attributes:
+
+  - name: haproxy00
+    includes:
+      - ubuntu-14.04
+    driver:
+      vm_hostname: haproxy00.yourorg.io
+      network:
+      - ["private_network", {ip: "192.168.254.8"}]
+    run_list:
+      - recipe[apt]
+      - recipe[cloudbees-cjp-ha::haproxy]
+    attributes:
+      cloudbees-cjp-ha:
+        haproxy:
+          keepalived:
+            priority: "100"
+
+  - name: haproxy01
+    includes:
+      - ubuntu-14.04
+    driver:
+      vm_hostname: haproxy01.yourorg.io
+      network:
+      - ["private_network", {ip: "192.168.254.9"}]
+    run_list:
+      - recipe[apt]
+      - recipe[cloudbees-cjp-ha::haproxy]
+    attributes:
+      cloudbees-cjp-ha:
+        haproxy:
+          keepalived:
+            priority: "99"
+
+  - name: opcenter00
+    includes:
+      - ubuntu-14.04
+    driver:
+      vm_hostname: opcenter00.yourorg.io
+      network:
+      - ["private_network", {ip: "192.168.254.20"}]
+    run_list:
+      - recipe[apt]
+      - recipe[cloudbees-cjp-ha::opcenter]
+    attributes:
+
+  - name: opcenter01
+    includes:
+      - ubuntu-14.04
+    driver:
+      vm_hostname: opcenter01.yourorg.io
+      network:
+      - ["private_network", {ip: "192.168.254.21"}]
+    run_list:
+      - recipe[apt]
+      - recipe[cloudbees-cjp-ha::opcenter]
+    attributes:
+
+  - name: master00
+    includes:
+      - ubuntu-14.04
+    driver:
+      vm_hostname: master00.yourorg.io
+      network:
+      - ["private_network", {ip: "192.168.254.30"}]
+    run_list:
+      - recipe[apt]
+      - recipe[cloudbees-cjp-ha::master]
+    attributes:
+
+  - name: master01
+    includes:
+      - ubuntu-14.04
+    driver:
+      vm_hostname: master01.yourorg.io
+      network:
+      - ["private_network", {ip: "192.168.254.31"}]
+    run_list:
+      - recipe[apt]
+      - recipe[cloudbees-cjp-ha::master]
+    attributes:
+
+  - name: slave
+    includes:
+      - ubuntu-14.04
+    driver:
+      vm_hostname: slave.yourorg.io
+      network:
+      - ["private_network", {ip: "192.168.254.100"}]
+    run_list:
+      - recipe[apt]
+      - recipe[cloudbees-cjp-ha::_oracle_jdk]
+    attributes:

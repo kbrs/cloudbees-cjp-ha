@@ -1,0 +1,8 @@
+# NFS Restore Recipe: __kitchen_load_prod_snapshot.rb
+files/jenkins-prod-snapshot.tar.gz
+files/*gpg-key
+
+# Default
+.kitchen/
+
+*.lock
