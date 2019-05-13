@@ -7,7 +7,7 @@ license          'GPL-2.0'
 description      'Installs/Configures Cloudbees CJP with High-Availability'
 long_description 'Installs/Configures Cloudbees CJP with High-Availability'
 chef_version '>= 12.1' if respond_to?(:chef_version)
-version          '17.11.0'
+version          '19.5.0'
 %w[
   debian
   ubuntu

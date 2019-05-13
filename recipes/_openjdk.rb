@@ -1,6 +1,6 @@
 #
 # Cookbook Name:: cloudbees-cjp-ha
-# Recipe:: _oracle_jdk
+# Recipe:: _openjdk
 #
 # Copyright (C) 2017 KickBack Rewards Systems <noc@kickbackpoints.com>
 #
@@ -22,19 +22,13 @@ package 'software-properties-common' do
   action :install
 end
 
-execute 'oracle_jdk_auto_license' do
-  command 'echo oracle-java8-installer shared/accepted-oracle-license-v1-1 select true | sudo /usr/bin/debconf-set-selections'
-  action :run
-  not_if { File.exist?('/etc/apt/sources.list.d/webupd8team-java-trusty.list') }
-end
-
 execute 'install_java_ppa' do
-  command 'add-apt-repository -y ppa:webupd8team/java && apt-get update'
+  command 'add-apt-repository ppa:openjdk-r/ppa && apt-get update'
   action :run
-  not_if { File.exist?('/etc/apt/sources.list.d/webupd8team-java-trusty.list') }
+  not_if { File.exist?('/etc/apt/sources.list.d/openjdk-r-ppa-trusty.list') }
 end
 
-package 'oracle-java8-installer' do
+package 'openjdk-8-jdk' do
   options '-y'
   action :install
 end

@@ -28,7 +28,7 @@ end
 include_recipe 'cloudbees-cjp-ha::_mail_relay'
 include_recipe 'cloudbees-cjp-ha::_opc_nfs_mounts'
 include_recipe 'cloudbees-cjp-ha::_opc_ip_multicast'
-include_recipe 'cloudbees-cjp-ha::_oracle_jdk'
+include_recipe 'cloudbees-cjp-ha::_openjdk'
 include_recipe 'cloudbees-cjp-ha::_increase_file_limits'
 include_recipe 'cloudbees-cjp-ha::_add_hosts'
 
