@@ -6,15 +6,15 @@ provisioner:
   name: chef_zero
 
 driver_config:
-  require_chef_omnibus: 12.13.37
+  require_chef_omnibus: 15.17.4
 
 platforms:
-  - name: ubuntu-14.04
+  - name: ubuntu-20.04
 
 suites:
   - name: nfs
     includes:
-      - ubuntu-14.04
+      - ubuntu-20.04
     driver:
       vm_hostname: nfs.yourorg.io
       network:
@@ -28,7 +28,7 @@ suites:
 
   - name: haproxy00
     includes:
-      - ubuntu-14.04
+      - ubuntu-20.04
     driver:
       vm_hostname: haproxy00.yourorg.io
       network:
@@ -44,7 +44,7 @@ suites:
 
   - name: haproxy01
     includes:
-      - ubuntu-14.04
+      - ubuntu-20.04
     driver:
       vm_hostname: haproxy01.yourorg.io
       network:
@@ -60,7 +60,7 @@ suites:
 
   - name: opcenter00
     includes:
-      - ubuntu-14.04
+      - ubuntu-20.04
     driver:
       vm_hostname: opcenter00.yourorg.io
       network:
@@ -72,7 +72,7 @@ suites:
 
   - name: opcenter01
     includes:
-      - ubuntu-14.04
+      - ubuntu-20.04
     driver:
       vm_hostname: opcenter01.yourorg.io
       network:
@@ -84,7 +84,7 @@ suites:
 
   - name: master00
     includes:
-      - ubuntu-14.04
+      - ubuntu-20.04
     driver:
       vm_hostname: master00.yourorg.io
       network:
@@ -96,7 +96,7 @@ suites:
 
   - name: master01
     includes:
-      - ubuntu-14.04
+      - ubuntu-20.04
     driver:
       vm_hostname: master01.yourorg.io
       network:
@@ -108,7 +108,7 @@ suites:
 
   - name: slave
     includes:
-      - ubuntu-14.04
+      - ubuntu-20.04
     driver:
       vm_hostname: slave.yourorg.io
       network:
