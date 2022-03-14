@@ -106,14 +106,14 @@ suites:
       - recipe[cloudbees-cjp-ha::master]
     attributes:
 
-  - name: slave
-    includes:
-      - ubuntu-20.04
-    driver:
-      vm_hostname: slave.yourorg.io
-      network:
-      - ["private_network", {ip: "192.168.254.100"}]
-    run_list:
-      - recipe[apt]
-      - recipe[cloudbees-cjp-ha::_oracle_jdk]
-    attributes:
+  # - name: slave
+  #   includes:
+  #     - ubuntu-20.04
+  #   driver:
+  #     vm_hostname: slave.yourorg.io
+  #     network:
+  #     - ["private_network", {ip: "192.168.254.100"}]
+  #   run_list:
+  #     - recipe[apt]
+  #     - recipe[cloudbees-cjp-ha::_oracle_jdk]
+  #   attributes:

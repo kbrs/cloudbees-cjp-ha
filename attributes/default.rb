@@ -44,7 +44,7 @@ default['cloudbees-cjp-ha']['haproxy']['settings']['stats_pass'] = 'admin'
 ##############################################################
 # Cloudbees Jenkins Operations Center                        #
 ##############################################################
-default['cloudbees-cjp-ha']['opcenter']['package']['version'] = '2.73.1.2'
+default['cloudbees-cjp-ha']['opcenter']['package']['version'] = '2.332.1.4'
 
 # max files is for jenkins, not the system.
 default['cloudbees-cjp-ha']['opcenter']['jenkins-oc']['max_open_files'] = '8192'
@@ -63,7 +63,7 @@ default['cloudbees-cjp-ha']['opcenter']['ip4_multicast']['interface'] = 'eth1'
 ##############################################################
 # Cloudbees Jenkins Client Master                            #
 ##############################################################
-default['cloudbees-cjp-ha']['master']['package']['version'] = '2.73.1.2'
+default['cloudbees-cjp-ha']['master']['package']['version'] = '2.332.1.4'
 
 # max files is for jenkins, not the system.
 default['cloudbees-cjp-ha']['master']['jenkins']['max_open_files'] = '8192'
