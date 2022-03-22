@@ -9,12 +9,12 @@ driver_config:
   require_chef_omnibus: 15.17.4
 
 platforms:
-  - name: ubuntu-20.04
+  - name: geerlingguy/ubuntu2004
 
 suites:
   - name: nfs
     includes:
-      - ubuntu-20.04
+      - geerlingguy/ubuntu2004
     driver:
       vm_hostname: nfs.yourorg.io
       network:
@@ -28,7 +28,7 @@ suites:
 
   - name: haproxy00
     includes:
-      - ubuntu-20.04
+      - geerlingguy/ubuntu2004
     driver:
       vm_hostname: haproxy00.yourorg.io
       network:
@@ -44,7 +44,7 @@ suites:
 
   - name: haproxy01
     includes:
-      - ubuntu-20.04
+      - geerlingguy/ubuntu2004
     driver:
       vm_hostname: haproxy01.yourorg.io
       network:
@@ -60,7 +60,7 @@ suites:
 
   - name: opcenter00
     includes:
-      - ubuntu-20.04
+      - geerlingguy/ubuntu2004
     driver:
       vm_hostname: opcenter00.yourorg.io
       network:
@@ -72,7 +72,7 @@ suites:
 
   - name: opcenter01
     includes:
-      - ubuntu-20.04
+      - geerlingguy/ubuntu2004
     driver:
       vm_hostname: opcenter01.yourorg.io
       network:
@@ -84,7 +84,7 @@ suites:
 
   - name: master00
     includes:
-      - ubuntu-20.04
+      - geerlingguy/ubuntu2004
     driver:
       vm_hostname: master00.yourorg.io
       network:
@@ -96,7 +96,7 @@ suites:
 
   - name: master01
     includes:
-      - ubuntu-20.04
+      - geerlingguy/ubuntu2004
     driver:
       vm_hostname: master01.yourorg.io
       network:
