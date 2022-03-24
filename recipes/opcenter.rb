@@ -26,8 +26,8 @@ execute 'remove_apparmor_from_startup' do
 end
 
 include_recipe 'cloudbees-cjp-ha::_mail_relay'
-#include_recipe 'cloudbees-cjp-ha::_opc_nfs_mounts'
-#include_recipe 'cloudbees-cjp-ha::_opc_ip_multicast'
+include_recipe 'cloudbees-cjp-ha::_opc_nfs_mounts'
+include_recipe 'cloudbees-cjp-ha::_opc_ip_multicast'
 include_recipe 'cloudbees-cjp-ha::_openjdk'
 include_recipe 'cloudbees-cjp-ha::_increase_file_limits'
 include_recipe 'cloudbees-cjp-ha::_add_hosts'
@@ -57,29 +57,29 @@ apt_repository 'jenkins' do
   not_if { File.exist?('/etc/apt/sources.list.d/jenkins.list') }
 end
 
-# package 'jenkins-oc' do
-#   #version node['cloudbees-cjp-ha']['opcenter']['package']['version']
-#   action :install
-#   notifies :nothing, 'service[jenkins-oc]', :immediately
-# end
+package 'jenkins-oc' do
+  #version node['cloudbees-cjp-ha']['opcenter']['package']['version']
+  action :install
+  notifies :nothing, 'service[jenkins-oc]', :immediately
+end
 
-# # Setup directory for jenkins-oc.war to run in
-# directory '/opt/jenkins/war' do
-#   mode '0777'
-#   recursive true
-#   action :create
-# end
+# Setup directory for jenkins-oc.war to run in
+directory '/opt/jenkins/war' do
+  mode '0777'
+  recursive true
+  action :create
+end
 
-# # configure jenkins-oc
-# template '/etc/default/jenkins-oc' do
-#   source   'opcenter-config-debian.erb'
-#   mode     '0644'
-#   notifies :restart, 'service[jenkins-oc]', :delayed
-# end
+# configure jenkins-oc
+template '/etc/default/jenkins-oc' do
+  source   'opcenter-config-debian.erb'
+  mode     '0644'
+  notifies :restart, 'service[jenkins-oc]', :delayed
+end
 
 # # Configure JGroups template
 # template '/var/lib/jenkins-oc/jgroups.xml' do
-#   source 'tcp-jgroups.xml.erb'
+#   source 'udp-jgroups.xml.erb'
 #   owner 'jenkins-oc'
 #   group 'jenkins-oc'
 #   mode '0644'

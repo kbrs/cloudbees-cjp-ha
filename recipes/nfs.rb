@@ -41,23 +41,28 @@ template '/etc/exports' do
   source 'exports.erb'
   owner 'root'
   group 'root'
-  mode '0744'
+  mode '0777'
 end
 
 template '/etc/hosts.allow' do
   source 'hosts.allow.erb'
   owner 'root'
   group 'root'
-  mode '0744'
+  mode '0777'
 end
 
 template '/etc/hosts.deny' do
   source 'hosts.deny.erb'
   owner 'root'
   group 'root'
-  mode '0744'
+  mode '0777'
 end
 
 package 'nfs-kernel-server' do
   action :install
+end
+
+service 'nfs-kernel-server' do
+  supports status: true, restart: true, stop: true, start: true
+  action %i(enable restart)
 end

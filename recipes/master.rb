@@ -79,10 +79,10 @@ template '/etc/default/jenkins' do
 end
 
 # Configure JGroups template
-template '/var/lib/jenkins/jgroups.xml' do
-  source 'tcp-jgroups.xml.erb' # specify udp or tcp. defaults to tcp in latest rev.
-  owner 'jenkins'
-  group 'jenkins'
-  mode '0644'
-  notifies :restart, 'service[jenkins]', :delayed
-end
+# template '/var/lib/jenkins/jgroups.xml' do
+#   source 'tcp-jgroups.xml.erb' # specify udp or tcp. defaults to tcp in latest rev.
+#   owner 'jenkins'
+#   group 'jenkins'
+#   mode '0644'
+#   notifies :restart, 'service[jenkins]', :delayed
+# end
