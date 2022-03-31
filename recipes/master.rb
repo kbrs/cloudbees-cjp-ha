@@ -26,7 +26,7 @@ execute 'remove_apparmor_from_startup' do
 end
 
 include_recipe 'cloudbees-cjp-ha::_mail_relay'
-include_recipe 'cloudbees-cjp-ha::_mst_nfs_mounts'
+#include_recipe 'cloudbees-cjp-ha::_mst_nfs_mounts'
 include_recipe 'cloudbees-cjp-ha::_mst_ip_multicast'
 include_recipe 'cloudbees-cjp-ha::_openjdk'
 include_recipe 'cloudbees-cjp-ha::_increase_file_limits'

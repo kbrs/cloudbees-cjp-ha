@@ -26,7 +26,7 @@ execute 'remove_apparmor_from_startup' do
 end
 
 include_recipe 'cloudbees-cjp-ha::_mail_relay'
-include_recipe 'cloudbees-cjp-ha::_opc_nfs_mounts'
+#include_recipe 'cloudbees-cjp-ha::_opc_nfs_mounts'
 include_recipe 'cloudbees-cjp-ha::_opc_ip_multicast'
 include_recipe 'cloudbees-cjp-ha::_openjdk'
 include_recipe 'cloudbees-cjp-ha::_increase_file_limits'
@@ -58,7 +58,7 @@ apt_repository 'jenkins' do
 end
 
 package 'jenkins-oc' do
-  #version node['cloudbees-cjp-ha']['opcenter']['package']['version']
+  version node['cloudbees-cjp-ha']['opcenter']['package']['version']
   action :install
   notifies :nothing, 'service[jenkins-oc]', :immediately
 end
@@ -77,11 +77,94 @@ template '/etc/default/jenkins-oc' do
   notifies :restart, 'service[jenkins-oc]', :delayed
 end
 
-# # Configure JGroups template
-# template '/var/lib/jenkins-oc/jgroups.xml' do
-#   source 'udp-jgroups.xml.erb'
-#   owner 'jenkins-oc'
-#   group 'jenkins-oc'
-#   mode '0644'
-#   notifies :restart, 'service[jenkins-oc]', :delayed
-# end
+# Configure JGroups template
+template '/var/lib/jenkins-oc/jgroups.xml' do
+  source 'tcp-jgroups.xml.erb'
+  owner 'jenkins-oc'
+  group 'jenkins-oc'
+  mode '0644'
+  notifies :restart, 'service[jenkins-oc]', :delayed
+end
+
+# root@opcenter00:/var/log/jenkins-oc# apt-cache madison jenkins-oc
+# jenkins-oc |  2.332.1.5 | https://downloads.cloudbees.com/cjoc/rolling/debian binary/ Packages
+# jenkins-oc |  2.332.1.4 | https://downloads.cloudbees.com/cjoc/rolling/debian binary/ Packages
+# jenkins-oc |  2.319.3.4 | https://downloads.cloudbees.com/cjoc/rolling/debian binary/ Packages
+# jenkins-oc |  2.319.3.3 | https://downloads.cloudbees.com/cjoc/rolling/debian binary/ Packages
+# jenkins-oc |  2.319.2.9 | https://downloads.cloudbees.com/cjoc/rolling/debian binary/ Packages
+# jenkins-oc |  2.319.2.7 | https://downloads.cloudbees.com/cjoc/rolling/debian binary/ Packages
+# jenkins-oc |  2.319.2.5 | https://downloads.cloudbees.com/cjoc/rolling/debian binary/ Packages
+# jenkins-oc |  2.319.1.5 | https://downloads.cloudbees.com/cjoc/rolling/debian binary/ Packages
+# jenkins-oc |  2.303.3.3 | https://downloads.cloudbees.com/cjoc/rolling/debian binary/ Packages
+# jenkins-oc |  2.303.2.6 | https://downloads.cloudbees.com/cjoc/rolling/debian binary/ Packages
+# jenkins-oc |  2.303.2.5 | https://downloads.cloudbees.com/cjoc/rolling/debian binary/ Packages
+# jenkins-oc |  2.303.2.3 | https://downloads.cloudbees.com/cjoc/rolling/debian binary/ Packages
+# jenkins-oc |  2.303.1.6 | https://downloads.cloudbees.com/cjoc/rolling/debian binary/ Packages
+# jenkins-oc |  2.303.1.5 | https://downloads.cloudbees.com/cjoc/rolling/debian binary/ Packages
+# jenkins-oc |  2.289.3.2 | https://downloads.cloudbees.com/cjoc/rolling/debian binary/ Packages
+# jenkins-oc |  2.289.2.3 | https://downloads.cloudbees.com/cjoc/rolling/debian binary/ Packages
+# jenkins-oc |  2.289.2.2 | https://downloads.cloudbees.com/cjoc/rolling/debian binary/ Packages
+# jenkins-oc |  2.289.1.2 | https://downloads.cloudbees.com/cjoc/rolling/debian binary/ Packages
+# jenkins-oc |  2.277.4.4 | https://downloads.cloudbees.com/cjoc/rolling/debian binary/ Packages
+# jenkins-oc |  2.277.4.3 | https://downloads.cloudbees.com/cjoc/rolling/debian binary/ Packages
+# jenkins-oc |  2.277.4.2 | https://downloads.cloudbees.com/cjoc/rolling/debian binary/ Packages
+# jenkins-oc |  2.277.3.1 | https://downloads.cloudbees.com/cjoc/rolling/debian binary/ Packages
+# jenkins-oc |  2.277.2.3 | https://downloads.cloudbees.com/cjoc/rolling/debian binary/ Packages
+# jenkins-oc |  2.277.1.2 | https://downloads.cloudbees.com/cjoc/rolling/debian binary/ Packages
+# jenkins-oc |  2.263.4.2 | https://downloads.cloudbees.com/cjoc/rolling/debian binary/ Packages
+# jenkins-oc |  2.263.4.1 | https://downloads.cloudbees.com/cjoc/rolling/debian binary/ Packages
+# jenkins-oc |  2.263.2.3 | https://downloads.cloudbees.com/cjoc/rolling/debian binary/ Packages
+# jenkins-oc |  2.263.2.2 | https://downloads.cloudbees.com/cjoc/rolling/debian binary/ Packages
+# jenkins-oc |  2.263.1.2 | https://downloads.cloudbees.com/cjoc/rolling/debian binary/ Packages
+# jenkins-oc |  2.249.3.3 | https://downloads.cloudbees.com/cjoc/rolling/debian binary/ Packages
+# jenkins-oc |  2.249.3.2 | https://downloads.cloudbees.com/cjoc/rolling/debian binary/ Packages
+# jenkins-oc |  2.249.3.1 | https://downloads.cloudbees.com/cjoc/rolling/debian binary/ Packages
+# jenkins-oc |  2.249.2.4 | https://downloads.cloudbees.com/cjoc/rolling/debian binary/ Packages
+# jenkins-oc |  2.249.2.3 | https://downloads.cloudbees.com/cjoc/rolling/debian binary/ Packages
+# jenkins-oc |  2.249.1.2 | https://downloads.cloudbees.com/cjoc/rolling/debian binary/ Packages
+# jenkins-oc |  2.235.5.1 | https://downloads.cloudbees.com/cjoc/rolling/debian binary/ Packages
+# jenkins-oc |  2.235.4.1 | https://downloads.cloudbees.com/cjoc/rolling/debian binary/ Packages
+# jenkins-oc |  2.235.2.3 | https://downloads.cloudbees.com/cjoc/rolling/debian binary/ Packages
+# jenkins-oc |  2.235.1.2 | https://downloads.cloudbees.com/cjoc/rolling/debian binary/ Packages
+# jenkins-oc |  2.222.4.3 | https://downloads.cloudbees.com/cjoc/rolling/debian binary/ Packages
+# jenkins-oc |  2.222.2.1 | https://downloads.cloudbees.com/cjoc/rolling/debian binary/ Packages
+# jenkins-oc |  2.222.1.1 | https://downloads.cloudbees.com/cjoc/rolling/debian binary/ Packages
+# jenkins-oc |  2.204.3.7 | https://downloads.cloudbees.com/cjoc/rolling/debian binary/ Packages
+# jenkins-oc |  2.204.3.4 | https://downloads.cloudbees.com/cjoc/rolling/debian binary/ Packages
+# jenkins-oc |  2.204.2.2 | https://downloads.cloudbees.com/cjoc/rolling/debian binary/ Packages
+# jenkins-oc |  2.204.1.3 | https://downloads.cloudbees.com/cjoc/rolling/debian binary/ Packages
+# jenkins-oc |  2.190.3.2 | https://downloads.cloudbees.com/cjoc/rolling/debian binary/ Packages
+# jenkins-oc |  2.190.2.2 | https://downloads.cloudbees.com/cjoc/rolling/debian binary/ Packages
+# jenkins-oc |  2.176.4.3 | https://downloads.cloudbees.com/cjoc/rolling/debian binary/ Packages
+# jenkins-oc |  2.176.3.3 | https://downloads.cloudbees.com/cjoc/rolling/debian binary/ Packages
+# jenkins-oc |  2.176.3.2 | https://downloads.cloudbees.com/cjoc/rolling/debian binary/ Packages
+# jenkins-oc |  2.176.2.3 | https://downloads.cloudbees.com/cjoc/rolling/debian binary/ Packages
+# jenkins-oc |  2.176.1.4 | https://downloads.cloudbees.com/cjoc/rolling/debian binary/ Packages
+# jenkins-oc |  2.164.3.2 | https://downloads.cloudbees.com/cjoc/rolling/debian binary/ Packages
+# jenkins-oc |  2.164.2.1 | https://downloads.cloudbees.com/cjoc/rolling/debian binary/ Packages
+# jenkins-oc |  2.164.1.2 | https://downloads.cloudbees.com/cjoc/rolling/debian binary/ Packages
+# jenkins-oc |  2.150.3.2 | https://downloads.cloudbees.com/cjoc/rolling/debian binary/ Packages
+# jenkins-oc |  2.150.2.3 | https://downloads.cloudbees.com/cjoc/rolling/debian binary/ Packages
+# jenkins-oc |  2.138.4.3 | https://downloads.cloudbees.com/cjoc/rolling/debian binary/ Packages
+# jenkins-oc |  2.138.3.1 | https://downloads.cloudbees.com/cjoc/rolling/debian binary/ Packages
+# jenkins-oc |  2.138.2.2 | https://downloads.cloudbees.com/cjoc/rolling/debian binary/ Packages
+# jenkins-oc |  2.138.1.2 | https://downloads.cloudbees.com/cjoc/rolling/debian binary/ Packages
+# jenkins-oc |  2.121.3.1 | https://downloads.cloudbees.com/cjoc/rolling/debian binary/ Packages
+# jenkins-oc |  2.121.2.1 | https://downloads.cloudbees.com/cjoc/rolling/debian binary/ Packages
+# jenkins-oc |  2.121.1.2 | https://downloads.cloudbees.com/cjoc/rolling/debian binary/ Packages
+# jenkins-oc |  2.107.3.4 | https://downloads.cloudbees.com/cjoc/rolling/debian binary/ Packages
+# jenkins-oc |  2.107.3.2 | https://downloads.cloudbees.com/cjoc/rolling/debian binary/ Packages
+# jenkins-oc |  2.107.2.1 | https://downloads.cloudbees.com/cjoc/rolling/debian binary/ Packages
+# jenkins-oc |  2.107.1.2 | https://downloads.cloudbees.com/cjoc/rolling/debian binary/ Packages
+# jenkins-oc |   2.89.4.2 | https://downloads.cloudbees.com/cjoc/rolling/debian binary/ Packages
+# jenkins-oc |   2.89.3.4 | https://downloads.cloudbees.com/cjoc/rolling/debian binary/ Packages
+# jenkins-oc |   2.89.1.7 | https://downloads.cloudbees.com/cjoc/rolling/debian binary/ Packages
+# jenkins-oc |   2.89.1.6 | https://downloads.cloudbees.com/cjoc/rolling/debian binary/ Packages
+# jenkins-oc |   2.73.3.1 | https://downloads.cloudbees.com/cjoc/rolling/debian binary/ Packages
+# jenkins-oc |   2.73.2.1 | https://downloads.cloudbees.com/cjoc/rolling/debian binary/ Packages
+# jenkins-oc |   2.73.1.2 | https://downloads.cloudbees.com/cjoc/rolling/debian binary/ Packages
+# jenkins-oc |   2.60.3.1 | https://downloads.cloudbees.com/cjoc/rolling/debian binary/ Packages
+# jenkins-oc |   2.60.2.2 | https://downloads.cloudbees.com/cjoc/rolling/debian binary/ Packages
+# jenkins-oc |   2.60.1.1 | https://downloads.cloudbees.com/cjoc/rolling/debian binary/ Packages
+# jenkins-oc |  1.999.1.1 | https://downloads.cloudbees.com/cjoc/rolling/debian binary/ Packages
+

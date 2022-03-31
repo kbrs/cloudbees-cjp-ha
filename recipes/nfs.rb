@@ -64,5 +64,5 @@ end
 
 service 'nfs-kernel-server' do
   supports status: true, restart: true, stop: true, start: true
-  action %i(enable restart)
+  action :restart
 end
