@@ -27,8 +27,8 @@ default['cloudbees-cjp-ha']['haproxy']['settings']['rise'] = '1'
 default['cloudbees-cjp-ha']['haproxy']['settings']['fall'] = '1'
 
 # jnlp ports are common to each cluster and MANUALLY SET in the Jenkins Security interface.
-default['cloudbees-cjp-ha']['haproxy']['hosts']['opcenter']['jnlp_port'] = '50001'
-default['cloudbees-cjp-ha']['haproxy']['hosts']['master']['jnlp_port'] = '50000'
+default['cloudbees-cjp-ha']['haproxy']['hosts']['opcenter']['jnlp_port'] = '10001'
+default['cloudbees-cjp-ha']['haproxy']['hosts']['master']['jnlp_port'] = '10000'
 
 # define cluster nodes
 default['cloudbees-cjp-ha']['haproxy']['hosts']['opcenter']['pri_ip'] = '192.168.254.20'

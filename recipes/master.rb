@@ -26,7 +26,7 @@ execute 'remove_apparmor_from_startup' do
 end
 
 include_recipe 'cloudbees-cjp-ha::_mail_relay'
-#include_recipe 'cloudbees-cjp-ha::_mst_nfs_mounts'
+include_recipe 'cloudbees-cjp-ha::_mst_nfs_mounts'
 include_recipe 'cloudbees-cjp-ha::_mst_ip_multicast'
 include_recipe 'cloudbees-cjp-ha::_openjdk'
 include_recipe 'cloudbees-cjp-ha::_increase_file_limits'
@@ -78,11 +78,11 @@ template '/etc/default/jenkins' do
   notifies :restart, 'service[jenkins]', :delayed
 end
 
-# Configure JGroups template
-# template '/var/lib/jenkins/jgroups.xml' do
-#   source 'tcp-jgroups.xml.erb' # specify udp or tcp. defaults to tcp in latest rev.
-#   owner 'jenkins'
-#   group 'jenkins'
-#   mode '0644'
-#   notifies :restart, 'service[jenkins]', :delayed
-# end
+#Configure JGroups template
+template '/var/lib/jenkins/jgroups.xml' do
+  source 'tcp-jgroups.xml.erb' # specify udp or tcp. defaults to tcp in latest rev.
+  owner 'jenkins'
+  group 'jenkins'
+  mode '0644'
+  notifies :restart, 'service[jenkins]', :delayed
+end
