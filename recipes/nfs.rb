@@ -21,6 +21,13 @@
 # NOTE:
 #   This recipe is only intended to let Kitchen get off the ground. BYONFS.
 
+include_recipe 'apparmor'
+
+execute 'remove_apparmor_from_startup' do
+  command 'update-rc.d -f apparmor remove'
+  action :run
+end
+
 directory '/mnt/exports/jenkins' do
   owner 'root'
   group 'root'
@@ -41,23 +48,38 @@ template '/etc/exports' do
   source 'exports.erb'
   owner 'root'
   group 'root'
-  mode '0744'
+  mode '0777'
 end
 
 template '/etc/hosts.allow' do
   source 'hosts.allow.erb'
   owner 'root'
   group 'root'
-  mode '0744'
+  mode '0777'
 end
 
 template '/etc/hosts.deny' do
   source 'hosts.deny.erb'
   owner 'root'
   group 'root'
-  mode '0744'
+  mode '0777'
 end
 
 package 'nfs-kernel-server' do
   action :install
+end
+
+service 'nfs-kernel-server' do
+  supports status: true, restart: true, stop: true, start: true
+  action :restart
+end
+
+service 'rpc-statd' do
+  supports status: true, restart: true, stop: true, start: true
+  action :start
+end
+
+service 'rpc-statd' do
+  supports status: true, restart: true, stop: true, start: true
+  action :enable
 end

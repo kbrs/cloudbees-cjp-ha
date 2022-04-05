@@ -8,7 +8,7 @@ default['cloudbees-cjp-ha']['haproxy']['keepalived']['priority'] = ''
 default['cloudbees-cjp-ha']['haproxy']['keepalived']['virt_ip'] = '192.168.254.10'
 default['cloudbees-cjp-ha']['haproxy']['keepalived']['virt_hostname'] = 'jenkins.yourorg.io'
 default['cloudbees-cjp-ha']['haproxy']['keepalived']['virt_shostname'] = 'jenkins'
-default['cloudbees-cjp-ha']['haproxy']['keepalived']['virt_int'] = 'eth1'
+default['cloudbees-cjp-ha']['haproxy']['keepalived']['virt_int'] = 'enp0s8'
 default['cloudbees-cjp-ha']['haproxy']['keepalived']['interval'] = '2'
 
 # notification settings for vip movement. set to root@localhost if you don't want email.
@@ -27,8 +27,8 @@ default['cloudbees-cjp-ha']['haproxy']['settings']['rise'] = '1'
 default['cloudbees-cjp-ha']['haproxy']['settings']['fall'] = '1'
 
 # jnlp ports are common to each cluster and MANUALLY SET in the Jenkins Security interface.
-default['cloudbees-cjp-ha']['haproxy']['hosts']['opcenter']['jnlp_port'] = '10002'
-default['cloudbees-cjp-ha']['haproxy']['hosts']['master']['jnlp_port'] = '10001'
+default['cloudbees-cjp-ha']['haproxy']['hosts']['opcenter']['jnlp_port'] = '10001'
+default['cloudbees-cjp-ha']['haproxy']['hosts']['master']['jnlp_port'] = '10000'
 
 # define cluster nodes
 default['cloudbees-cjp-ha']['haproxy']['hosts']['opcenter']['pri_ip'] = '192.168.254.20'
@@ -44,7 +44,7 @@ default['cloudbees-cjp-ha']['haproxy']['settings']['stats_pass'] = 'admin'
 ##############################################################
 # Cloudbees Jenkins Operations Center                        #
 ##############################################################
-default['cloudbees-cjp-ha']['opcenter']['package']['version'] = '2.73.1.2'
+default['cloudbees-cjp-ha']['opcenter']['package']['version'] = '2.303.2.6'
 
 # max files is for jenkins, not the system.
 default['cloudbees-cjp-ha']['opcenter']['jenkins-oc']['max_open_files'] = '8192'
@@ -58,12 +58,12 @@ default['cloudbees-cjp-ha']['opcenter']['nfs_mount']['fstype'] = 'nfs'
 default['cloudbees-cjp-ha']['opcenter']['nfs_mount']['options'] = 'intr,rw,nfsvers=3,sec=sys,tcp,hard,timeo=300,_netdev'
 
 # multicast is used for the high-availablity function in Cloudbees CJP.
-default['cloudbees-cjp-ha']['opcenter']['ip4_multicast']['interface'] = 'eth1'
+default['cloudbees-cjp-ha']['opcenter']['ip4_multicast']['interface'] = 'enp0s8'
 
 ##############################################################
 # Cloudbees Jenkins Client Master                            #
 ##############################################################
-default['cloudbees-cjp-ha']['master']['package']['version'] = '2.73.1.2'
+default['cloudbees-cjp-ha']['master']['package']['version'] = '2.303.2.6'
 
 # max files is for jenkins, not the system.
 default['cloudbees-cjp-ha']['master']['jenkins']['max_open_files'] = '8192'
@@ -77,7 +77,7 @@ default['cloudbees-cjp-ha']['master']['nfs_mount']['fstype'] = 'nfs'
 default['cloudbees-cjp-ha']['master']['nfs_mount']['options'] = 'intr,rw,nfsvers=3,sec=sys,tcp,hard,timeo=300,_netdev'
 
 # multicast is used for the high-availablity function in Cloudbees CJP.
-default['cloudbees-cjp-ha']['master']['ip4_multicast']['interface'] = 'eth1'
+default['cloudbees-cjp-ha']['master']['ip4_multicast']['interface'] = 'enp0s8'
 
 ##############################################################
 # Universal Attributes -- Used across all recipes/nodes      #

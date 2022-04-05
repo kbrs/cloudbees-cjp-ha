@@ -59,7 +59,7 @@ apt_repository 'jenkins' do
 end
 
 package 'jenkins' do
-  version node['cloudbees-cjp-ha']['master']['package']['version']
+ # version node['cloudbees-cjp-ha']['master']['package']['version']
   action :install
   notifies :nothing, 'service[jenkins]', :immediately
 end
@@ -78,7 +78,7 @@ template '/etc/default/jenkins' do
   notifies :restart, 'service[jenkins]', :delayed
 end
 
-# Configure JGroups template
+#Configure JGroups template
 template '/var/lib/jenkins/jgroups.xml' do
   source 'tcp-jgroups.xml.erb' # specify udp or tcp. defaults to tcp in latest rev.
   owner 'jenkins'
