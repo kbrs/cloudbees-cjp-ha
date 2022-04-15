@@ -3,18 +3,16 @@ driver:
   name: vagrant
 
 provisioner:
-  name: chef_zero
-
-driver_config:
-  require_chef_omnibus: 12.13.37
+  product_name: chef
+  product_version: 15.17.4
 
 platforms:
-  - name: ubuntu-14.04
+  - name: geerlingguy/ubuntu2004
 
 suites:
   - name: nfs
     includes:
-      - ubuntu-14.04
+      - geerlingguy/ubuntu2004
     driver:
       vm_hostname: nfs.yourorg.io
       network:
@@ -28,7 +26,7 @@ suites:
 
   - name: haproxy00
     includes:
-      - ubuntu-14.04
+      - geerlingguy/ubuntu2004
     driver:
       vm_hostname: haproxy00.yourorg.io
       network:
@@ -44,7 +42,7 @@ suites:
 
   - name: haproxy01
     includes:
-      - ubuntu-14.04
+      - geerlingguy/ubuntu2004
     driver:
       vm_hostname: haproxy01.yourorg.io
       network:
@@ -60,7 +58,7 @@ suites:
 
   - name: opcenter00
     includes:
-      - ubuntu-14.04
+      - geerlingguy/ubuntu2004
     driver:
       vm_hostname: opcenter00.yourorg.io
       network:
@@ -72,7 +70,7 @@ suites:
 
   - name: opcenter01
     includes:
-      - ubuntu-14.04
+      - geerlingguy/ubuntu2004
     driver:
       vm_hostname: opcenter01.yourorg.io
       network:
@@ -84,7 +82,7 @@ suites:
 
   - name: master00
     includes:
-      - ubuntu-14.04
+      - geerlingguy/ubuntu2004
     driver:
       vm_hostname: master00.yourorg.io
       network:
@@ -96,7 +94,7 @@ suites:
 
   - name: master01
     includes:
-      - ubuntu-14.04
+      - geerlingguy/ubuntu2004
     driver:
       vm_hostname: master01.yourorg.io
       network:
@@ -108,12 +106,12 @@ suites:
 
   - name: slave
     includes:
-      - ubuntu-14.04
+      - geerlingguy/ubuntu2004
     driver:
       vm_hostname: slave.yourorg.io
       network:
       - ["private_network", {ip: "192.168.254.100"}]
     run_list:
       - recipe[apt]
-      - recipe[cloudbees-cjp-ha::_oracle_jdk]
+      - recipe[cloudbees-cjp-ha::_openjdk]
     attributes:

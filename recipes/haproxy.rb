@@ -48,12 +48,6 @@ end
   package pkg
 end
 
-execute 'add_haproxy_repo' do
-  command 'add-apt-repository -y ppa:vbernat/haproxy-1.6 && apt-get update'
-  action :run
-  not_if { File.exist?('/etc/apt/sources.list.d/vbernat-haproxy-1_6-trusty.list') }
-end
-
 package 'haproxy' do
   options '-y'
   action :install

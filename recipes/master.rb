@@ -78,7 +78,7 @@ template '/etc/default/jenkins' do
   notifies :restart, 'service[jenkins]', :delayed
 end
 
-# Configure JGroups template
+#Configure JGroups template
 template '/var/lib/jenkins/jgroups.xml' do
   source 'tcp-jgroups.xml.erb' # specify udp or tcp. defaults to tcp in latest rev.
   owner 'jenkins'

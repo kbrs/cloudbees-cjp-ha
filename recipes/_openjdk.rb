@@ -25,7 +25,7 @@ end
 execute 'install_java_ppa' do
   command 'add-apt-repository ppa:openjdk-r/ppa && apt-get update'
   action :run
-  not_if { File.exist?('/etc/apt/sources.list.d/openjdk-r-ppa-trusty.list') }
+  not_if { File.exist?('/etc/apt/sources.list.d/openjdk-r-ubuntu-ppa-focal.list') }
 end
 
 package 'openjdk-8-jdk' do
