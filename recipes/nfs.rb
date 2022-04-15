@@ -69,10 +69,10 @@ package 'nfs-kernel-server' do
   action :install
 end
 
-service 'nfs-kernel-server' do
-  supports status: true, restart: true, stop: true, start: true
-  action :restart
-end
+# service 'nfs-kernel-server' do
+#   supports status: true, restart: true, stop: true, start: true
+#   action :restart
+# end
 
 service 'rpc-statd' do
   supports status: true, restart: true, stop: true, start: true
